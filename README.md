@@ -1,6 +1,6 @@
 # HR Performance Dashboard
 
-Hey there! This is a simple HR dashboard I built to help managers keep track of their team's performance. 
+Hey there I am Puneet Kathpalia This is a simple HR dashboard I built to help managers keep track of their teams performance. 
 
 What's Inside?
 
