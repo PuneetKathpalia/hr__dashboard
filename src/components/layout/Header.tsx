@@ -14,7 +14,7 @@ export default function Header() {
   useEffect(() => {
     setMounted(true)
     // Check system preference for initial theme
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       setIsDark(true)
       document.documentElement.classList.add('dark')
     }
@@ -56,6 +56,7 @@ export default function Header() {
           <button
             onClick={toggleTheme}
             className="p-2 text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300"
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
           >
             {isDark ? (
               <SunIcon className="h-5 w-5" />
