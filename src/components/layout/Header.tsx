@@ -1,5 +1,6 @@
 'use client'
 
+// Header component with dark mode and search functionality
 import { useState, useEffect } from 'react'
 import { MagnifyingGlassIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline'
 import { useStore } from '@/store/useStore'
