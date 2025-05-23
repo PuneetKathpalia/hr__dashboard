@@ -6,11 +6,21 @@ import EmployeeCard from '@/components/employees/EmployeeCard'
 
 const departments = ['Engineering', 'Marketing', 'Sales', 'HR', 'Design']
 
+interface DummyUserResponse {
+  users: Array<{
+    id: number
+    firstName: string
+    lastName: string
+    email: string
+    image: string
+  }>
+}
+
 async function fetchEmployees() {
   const response = await fetch('https://dummyjson.com/users?limit=20')
-  const data = await response.json()
+  const data: DummyUserResponse = await response.json()
   
-  return data.users.map((user: any) => ({
+  return data.users.map((user) => ({
     id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
