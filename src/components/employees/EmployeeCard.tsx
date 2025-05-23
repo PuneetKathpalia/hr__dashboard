@@ -13,7 +13,6 @@ type CardProps = {
   rating: number
   pic: string
   promoted?: boolean
-  promoDate?: string
 }
 
 export default function EmployeeCard({
@@ -25,7 +24,6 @@ export default function EmployeeCard({
   rating,
   pic,
   promoted,
-  promoDate,
 }: CardProps) {
   const { favorites, toggleFavorite, handlePromotion } = useStore()
   const isFavorite = favorites.includes(id)
