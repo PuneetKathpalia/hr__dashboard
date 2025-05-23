@@ -1,115 +1,68 @@
-# HR Dashboard
+# HR Performance Dashboard
 
-A modern HR performance tracking dashboard built with Next.js, Tailwind CSS, and TypeScript.
+Hey there! 👋 This is a simple HR dashboard I built to help managers keep track of their team's performance. It's built with Next.js and has a clean, modern look thanks to Tailwind CSS.
 
-## Features
+## What's Inside?
 
-- 📊 Employee performance tracking
-- 🔍 Search and filter employees
-- 📌 Bookmark management
-- 📈 Department analytics
-- 🌓 Dark/Light mode support
-- 📱 Responsive design
-
-## Tech Stack
-
-- Next.js 14 (App Router)
-- TypeScript
-- Tailwind CSS
-- Zustand (State Management)
-- Chart.js
-- React Icons
-- Heroicons
+- **Dashboard Home**: See all your team members at a glance
+- **Quick Search**: Find people by name, email, or department
+- **Bookmarks**: Save profiles you check often
+- **Performance Tracking**: Rate and track performance with a simple star system
+- **Dark Mode**: Easy on the eyes when working late!
 
 ## Getting Started
 
-1. Clone the repository:
+Want to run this locally? Here's how:
+
+1. Clone it:
 ```bash
-git clone <repository-url>
-cd hrdboard
+git clone https://github.com/PuneetKathpalia/HR_dashboard.git
+cd HR_dashboard
 ```
 
-2. Install dependencies:
+2. Install stuff:
 ```bash
 npm install
 ```
 
-3. Run the development server:
+3. Run it:
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then just open [http://localhost:3000](http://localhost:3000) in your browser!
+
+## Cool Features
+
+- **Search & Filter**: Quick way to find team members
+- **Bookmark System**: Keep track of important profiles
+- **Performance Stats**: Simple performance tracking
+- **Mobile Friendly**: Works great on phones too!
+
+## Built With
+
+- Next.js
+- Tailwind CSS
+- TypeScript
+- Zustand (for state management)
 
 ## Project Structure
 
 ```
 src/
-├── app/                    # Next.js app router pages
-│   ├── page.tsx           # Homepage
-│   ├── bookmarks/         # Bookmarked employees
-│   ├── analytics/         # Analytics dashboard
-│   └── employee/          # Dynamic employee pages
-├── components/            # Reusable components
-│   ├── employees/         # Employee-related components
-│   └── layout/           # Layout components
-├── store/                # Zustand store
-└── types/                # TypeScript types
+├── app/                # Pages live here
+├── components/         # Reusable parts
+├── store/             # State management
 ```
 
-## Features Explanation
+## Want to Help?
 
-### Dashboard Homepage
-- Displays employee cards with basic information
-- Performance rating visualization
-- Quick actions (View, Bookmark, Promote)
-
-### Search & Filter
-- Real-time search functionality
-- Filter by department
-- Case-insensitive search
-
-### Employee Details
-- Comprehensive employee information
-- Tabbed interface (Overview, Projects, Feedback)
-- Performance history
-
-### Bookmarks
-- Save important employee profiles
-- Quick access to bookmarked employees
-- Remove from bookmarks
-
-### Analytics
-- Department-wise performance metrics
-- Interactive charts
-- Performance trends
-
-## State Management
-
-The application uses Zustand for state management with the following stores:
-- Employee data
-- Bookmark management
-- Search/Filter state
-
-## Styling
-
-The project uses Tailwind CSS for styling with:
-- Responsive design
-- Dark/Light mode support
-- Custom components
-- Consistent spacing and colors
-
-## Performance Optimization
-
-- Client-side state management
-- Optimized images
-- Responsive design
-- TypeScript for better development experience
-
-## Contributing
-
-1. Fork the repository
+Feel free to:
+1. Fork it
 2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request
+3. Make your changes
+4. Send a pull request
+
+## Questions?
+
+Feel free to reach out if you have questions or run into issues!

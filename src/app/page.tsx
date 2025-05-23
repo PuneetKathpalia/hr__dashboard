@@ -4,66 +4,73 @@ import { useEffect } from 'react'
 import { useStore } from '@/store/useStore'
 import EmployeeCard from '@/components/employees/EmployeeCard'
 
-const departments = ['Engineering', 'Marketing', 'Sales', 'HR', 'Design']
+// Team departments
+const depts = ['Engineering', 'Marketing', 'Sales', 'HR', 'Design']
 
-interface DummyUserResponse {
-  users: Array<{
-    id: number
-    firstName: string
-    lastName: string
-    email: string
-    image: string
-  }>
+// API response type
+type ApiUser = {
+  id: number
+  firstName: string
+  lastName: string
+  email: string
+  image: string
 }
 
-async function fetchEmployees() {
+type ApiResponse = {
+  users: ApiUser[]
+}
+
+// Get team data from API
+async function getTeamData() {
   const response = await fetch('https://dummyjson.com/users?limit=20')
-  const data: DummyUserResponse = await response.json()
+  const data: ApiResponse = await response.json()
   
-  return data.users.map((user) => ({
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    department: departments[Math.floor(Math.random() * departments.length)],
-    performanceRating: Math.floor(Math.random() * 5) + 1,
-    image: user.image,
+  return data.users.map((person) => ({
+    id: person.id,
+    firstName: person.firstName,
+    lastName: person.lastName,
+    email: person.email,
+    dept: depts[Math.floor(Math.random() * depts.length)],
+    rating: Math.floor(Math.random() * 5) + 1,
+    pic: person.image,
   }))
 }
 
 export default function Home() {
-  const { employees, setEmployees, searchQuery } = useStore()
+  const { team, updateTeam, search } = useStore()
 
+  // Load team data on startup
   useEffect(() => {
-    const loadEmployees = async () => {
-      const employeeData = await fetchEmployees()
-      setEmployees(employeeData)
+    async function loadTeam() {
+      const teamData = await getTeamData()
+      updateTeam(teamData)
     }
-    loadEmployees()
-  }, [setEmployees])
+    loadTeam()
+  }, [updateTeam])
 
-  const filteredEmployees = employees.filter((employee) => {
-    const searchTerm = searchQuery.toLowerCase()
+  // Filter team based on search
+  const filteredTeam = team.filter((person) => {
+    const searchText = search.toLowerCase()
     return (
-      employee.firstName.toLowerCase().includes(searchTerm) ||
-      employee.lastName.toLowerCase().includes(searchTerm) ||
-      employee.email.toLowerCase().includes(searchTerm) ||
-      employee.department.toLowerCase().includes(searchTerm)
+      person.firstName.toLowerCase().includes(searchText) ||
+      person.lastName.toLowerCase().includes(searchText) ||
+      person.email.toLowerCase().includes(searchText) ||
+      person.dept.toLowerCase().includes(searchText)
     )
   })
 
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Employee Dashboard</h1>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Team Dashboard</h1>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          Manage and track employee performance
+          Keep track of your team's performance
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredEmployees.map((employee) => (
-          <EmployeeCard key={employee.id} {...employee} />
+        {filteredTeam.map((person) => (
+          <EmployeeCard key={person.id} {...person} />
         ))}
       </div>
     </div>

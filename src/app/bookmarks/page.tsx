@@ -3,32 +3,30 @@
 import { useStore } from '@/store/useStore'
 import EmployeeCard from '@/components/employees/EmployeeCard'
 
-export default function BookmarksPage() {
-  const { employees, bookmarkedEmployees } = useStore()
+export default function FavoritesPage() {
+  const { team, favorites } = useStore()
   
-  const bookmarkedEmployeesList = employees.filter((employee) =>
-    bookmarkedEmployees.includes(employee.id)
-  )
+  const favoriteTeam = team.filter(person => favorites.includes(person.id))
 
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Bookmarked Employees</h1>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Favorite Team Members</h1>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          View and manage your bookmarked employees
+          Quick access to your starred team members
         </p>
       </div>
 
-      {bookmarkedEmployeesList.length === 0 ? (
+      {favoriteTeam.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-500 dark:text-gray-400">
-            No bookmarked employees yet. Start bookmarking employees from the dashboard!
+            No favorites yet. Star some team members from the dashboard!
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {bookmarkedEmployeesList.map((employee) => (
-            <EmployeeCard key={employee.id} {...employee} />
+          {favoriteTeam.map((person) => (
+            <EmployeeCard key={person.id} {...person} />
           ))}
         </div>
       )}

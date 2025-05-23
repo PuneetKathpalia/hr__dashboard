@@ -1,65 +1,69 @@
 import { create } from 'zustand'
 
-interface Employee {
+// Basic employee info
+type Employee = {
   id: number
   firstName: string
   lastName: string
   email: string
-  department: string
-  performanceRating: number
-  image: string
+  dept: string  // shorter name for department
+  rating: number  // shorter name for performanceRating
+  pic: string    // shorter name for image
   role?: string
-  isPromoted?: boolean
-  promotedAt?: string
-  previousRating?: number
+  promoted?: boolean  // simpler name than isPromoted
+  promoDate?: string // shorter name for promotedAt
+  oldRating?: number // simpler name for previousRating
 }
 
-interface Store {
-  employees: Employee[]
-  bookmarkedEmployees: number[]
-  searchQuery: string
-  setEmployees: (employees: Employee[]) => void
-  toggleBookmark: (employeeId: number) => void
-  setSearchQuery: (query: string) => void
-  togglePromotion: (employeeId: number) => void
+// Our main store
+type AppStore = {
+  team: Employee[]  // simpler name than employees
+  favorites: number[]  // more natural name than bookmarkedEmployees
+  search: string    // simpler name than searchQuery
+  
+  // Actions
+  updateTeam: (team: Employee[]) => void
+  toggleFavorite: (id: number) => void
+  updateSearch: (text: string) => void
+  handlePromotion: (id: number) => void
 }
 
-export const useStore = create<Store>((set) => ({
-  employees: [],
-  bookmarkedEmployees: [],
-  searchQuery: '',
+export const useStore = create<AppStore>((set) => ({
+  team: [],
+  favorites: [],
+  search: '',
   
-  setEmployees: (employees) => set({ employees }),
+  updateTeam: (team) => set({ team }),
   
-  toggleBookmark: (employeeId) =>
+  toggleFavorite: (id) =>
     set((state) => ({
-      bookmarkedEmployees: state.bookmarkedEmployees.includes(employeeId)
-        ? state.bookmarkedEmployees.filter((id) => id !== employeeId)
-        : [...state.bookmarkedEmployees, employeeId],
+      favorites: state.favorites.includes(id)
+        ? state.favorites.filter(memberId => memberId !== id)
+        : [...state.favorites, id],
     })),
     
-  setSearchQuery: (query) => set({ searchQuery: query }),
+  updateSearch: (text) => set({ search: text }),
 
-  togglePromotion: (employeeId) =>
+  handlePromotion: (id) =>
     set((state) => ({
-      employees: state.employees.map((employee) =>
-        employee.id === employeeId
-          ? employee.isPromoted
+      team: state.team.map((member) =>
+        member.id === id
+          ? member.promoted
             ? {
-                ...employee,
-                isPromoted: false,
-                promotedAt: undefined,
-                performanceRating: employee.previousRating || employee.performanceRating - 1,
-                previousRating: undefined,
+                ...member,
+                promoted: false,
+                promoDate: undefined,
+                rating: member.oldRating || member.rating - 1,
+                oldRating: undefined,
               }
             : {
-                ...employee,
-                isPromoted: true,
-                promotedAt: new Date().toISOString(),
-                previousRating: employee.performanceRating,
-                performanceRating: Math.min(5, employee.performanceRating + 1),
+                ...member,
+                promoted: true,
+                promoDate: new Date().toISOString(),
+                oldRating: member.rating,
+                rating: Math.min(5, member.rating + 1),
               }
-          : employee
+          : member
       ),
     })),
 })) 

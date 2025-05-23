@@ -4,16 +4,16 @@ import Link from 'next/link'
 import { useStore } from '@/store/useStore'
 import Image from 'next/image'
 
-interface EmployeeCardProps {
+type CardProps = {
   id: number
   firstName: string
   lastName: string
   email: string
-  department: string
-  performanceRating: number
-  image: string
-  isPromoted?: boolean
-  promotedAt?: string
+  dept: string
+  rating: number
+  pic: string
+  promoted?: boolean
+  promoDate?: string
 }
 
 export default function EmployeeCard({
@@ -21,25 +21,21 @@ export default function EmployeeCard({
   firstName,
   lastName,
   email,
-  department,
-  performanceRating,
-  image,
-  isPromoted,
-  promotedAt,
-}: EmployeeCardProps) {
-  const { bookmarkedEmployees, toggleBookmark, togglePromotion } = useStore()
-  const isBookmarked = bookmarkedEmployees.includes(id)
-
-  const handlePromotionToggle = () => {
-    togglePromotion(id)
-  }
+  dept,
+  rating,
+  pic,
+  promoted,
+  promoDate,
+}: CardProps) {
+  const { favorites, toggleFavorite, handlePromotion } = useStore()
+  const isFavorite = favorites.includes(id)
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 transition-all hover:shadow-lg">
       <div className="flex items-start justify-between">
         <div className="flex items-center space-x-4">
           <Image
-            src={image}
+            src={pic}
             alt={`${firstName} ${lastName}`}
             width={48}
             height={48}
@@ -52,9 +48,9 @@ export default function EmployeeCard({
             <p className="text-sm text-gray-500 dark:text-gray-400">{email}</p>
             <div className="flex flex-wrap gap-2 mt-2">
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                {department}
+                {dept}
               </span>
-              {isPromoted && (
+              {promoted && (
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                   Promoted
                 </span>
@@ -63,10 +59,10 @@ export default function EmployeeCard({
           </div>
         </div>
         <button
-          onClick={() => toggleBookmark(id)}
+          onClick={() => toggleFavorite(id)}
           className="text-gray-400 hover:text-yellow-500 transition-colors"
         >
-          {isBookmarked ? (
+          {isFavorite ? (
             <StarIcon className="h-6 w-6 text-yellow-500" />
           ) : (
             <StarOutlineIcon className="h-6 w-6" />
@@ -75,49 +71,30 @@ export default function EmployeeCard({
       </div>
 
       <div className="mt-4">
-        <div className="flex items-center">
+        <div className="flex items-center justify-between">
           <div className="flex items-center">
-            {[...Array(5)].map((_, index) => (
+            {[...Array(5)].map((_, i) => (
               <StarIcon
-                key={index}
+                key={i}
                 className={`h-5 w-5 ${
-                  index < performanceRating
+                  i < rating
                     ? 'text-yellow-400'
                     : 'text-gray-300 dark:text-gray-600'
                 }`}
               />
             ))}
+            <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">
+              Performance
+            </span>
           </div>
-          <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">
-            Performance Rating
-          </span>
+          <button
+            onClick={() => handlePromotion(id)}
+            className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+          >
+            {promoted ? 'Undo Promotion' : 'Promote'}
+          </button>
         </div>
       </div>
-
-      <div className="mt-4 flex space-x-3">
-        <Link
-          href={`/employee/${id}`}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          View Profile
-        </Link>
-        <button
-          onClick={handlePromotionToggle}
-          className={`inline-flex items-center px-4 py-2 border text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-            isPromoted
-              ? 'border-orange-500 text-orange-700 bg-orange-50 hover:bg-orange-100 dark:border-orange-600 dark:bg-orange-900/20 dark:text-orange-400 dark:hover:bg-orange-900/40 focus:ring-orange-500'
-              : 'border-green-500 text-green-700 bg-green-50 hover:bg-green-100 dark:border-green-600 dark:bg-green-900/20 dark:text-green-400 dark:hover:bg-green-900/40 focus:ring-green-500'
-          }`}
-        >
-          {isPromoted ? 'Unpromote' : 'Promote'}
-        </button>
-      </div>
-
-      {isPromoted && promotedAt && (
-        <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-          Promoted on {new Date(promotedAt).toLocaleDateString()}
-        </p>
-      )}
     </div>
   )
 } 
