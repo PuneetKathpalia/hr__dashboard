@@ -6,7 +6,7 @@ import { StarIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 
-interface TabProps {
+type TabProps = {
   label: string
   isActive: boolean
   onClick: () => void
@@ -25,7 +25,7 @@ const Tab = ({ label, isActive, onClick }: TabProps) => (
   </button>
 )
 
-// Mock data moved to a separate constant
+// Mock data for projects and feedback
 const MOCK_DATA = {
   projects: [
     { id: 1, name: 'Website Redesign', status: 'Completed', date: '2024-01-15' },
@@ -39,41 +39,41 @@ const MOCK_DATA = {
   ]
 }
 
-export default function EmployeeDetailsPage() {
+export default function TeamMemberPage() {
   const [activeTab, setActiveTab] = useState('overview')
-  const { employees } = useStore()
+  const { team } = useStore()
   const params = useParams()
   
-  // Safely get the ID from params and convert to number
-  const employeeId = typeof params?.id === 'string' ? parseInt(params.id) : null
-  const employee = employeeId ? employees.find(emp => emp.id === employeeId) : null
+  // Get member ID from URL
+  const memberId = typeof params?.id === 'string' ? parseInt(params.id) : null
+  const member = memberId ? team.find(m => m.id === memberId) : null
 
-  if (!employee) {
+  if (!member) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 dark:text-gray-400">Employee not found</p>
+        <p className="text-gray-500 dark:text-gray-400">Team member not found</p>
       </div>
     )
   }
 
-  // Render functions for each tab to keep the code organized
+  // Tab content renderers
   const renderOverviewTab = () => (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
       <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-        Employee Overview
+        Overview
       </h2>
       <div className="space-y-4">
         <div>
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Department</h3>
-          <p className="mt-1 text-gray-900 dark:text-white">{employee.department}</p>
+          <p className="mt-1 text-gray-900 dark:text-white">{member.dept}</p>
         </div>
         <div>
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Performance Rating</h3>
-          <p className="mt-1 text-gray-900 dark:text-white">{employee.performanceRating} / 5</p>
+          <p className="mt-1 text-gray-900 dark:text-white">{member.rating} / 5</p>
         </div>
         <div>
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Contact</h3>
-          <p className="mt-1 text-gray-900 dark:text-white">{employee.email}</p>
+          <p className="mt-1 text-gray-900 dark:text-white">{member.email}</p>
         </div>
       </div>
     </div>
@@ -108,11 +108,11 @@ export default function EmployeeDetailsPage() {
         <div key={feedback.id} className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center">
-              {[...Array(5)].map((_, index) => (
+              {[...Array(5)].map((_, i) => (
                 <StarIcon
-                  key={index}
+                  key={i}
                   className={`h-5 w-5 ${
-                    index < feedback.rating
+                    i < feedback.rating
                       ? 'text-yellow-400'
                       : 'text-gray-300 dark:text-gray-600'
                   }`}
@@ -129,32 +129,32 @@ export default function EmployeeDetailsPage() {
 
   return (
     <div>
-      {/* Employee Header */}
+      {/* Member Header */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
         <div className="p-6">
           <div className="flex items-start space-x-6">
             <Image
-              src={employee.image}
-              alt={`${employee.firstName} ${employee.lastName}`}
+              src={member.pic}
+              alt={`${member.firstName} ${member.lastName}`}
               width={96}
               height={96}
               className="rounded-lg"
             />
             <div>
               <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
-                {employee.firstName} {employee.lastName}
+                {member.firstName} {member.lastName}
               </h1>
-              <p className="text-gray-500 dark:text-gray-400">{employee.email}</p>
+              <p className="text-gray-500 dark:text-gray-400">{member.email}</p>
               <div className="mt-2 flex items-center space-x-2">
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                  {employee.department}
+                  {member.dept}
                 </span>
                 <div className="flex items-center">
-                  {[...Array(5)].map((_, index) => (
+                  {[...Array(5)].map((_, i) => (
                     <StarIcon
-                      key={index}
+                      key={i}
                       className={`h-5 w-5 ${
-                        index < employee.performanceRating
+                        i < member.rating
                           ? 'text-yellow-400'
                           : 'text-gray-300 dark:text-gray-600'
                       }`}
@@ -167,7 +167,7 @@ export default function EmployeeDetailsPage() {
         </div>
 
         {/* Tabs */}
-        <div className="border-t border-gray-200 dark:border-gray-700 px-6 py-4">
+        <div className="px-6 border-t border-gray-200 dark:border-gray-700">
           <div className="flex space-x-4">
             <Tab label="Overview" isActive={activeTab === 'overview'} onClick={() => setActiveTab('overview')} />
             <Tab label="Projects" isActive={activeTab === 'projects'} onClick={() => setActiveTab('projects')} />

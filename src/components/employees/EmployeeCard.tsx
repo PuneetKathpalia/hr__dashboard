@@ -42,9 +42,12 @@ export default function EmployeeCard({
             className="rounded-full"
           />
           <div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+            <Link 
+              href={`/employee/${id}`}
+              className="text-lg font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
+            >
               {firstName} {lastName}
-            </h3>
+            </Link>
             <p className="text-sm text-gray-500 dark:text-gray-400">{email}</p>
             <div className="flex flex-wrap gap-2 mt-2">
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
