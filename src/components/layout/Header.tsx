@@ -2,7 +2,7 @@
 
 // Header component with dark mode and search functionality
 import { useEffect, useState } from 'react'
-import { MagnifyingGlassIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline'
+import { MagnifyingGlassIcon, SunIcon, MoonIcon, UserCircleIcon } from '@heroicons/react/24/outline'
 import { useStore } from '@/store/useStore'
 
 export default function Header() {
@@ -53,17 +53,28 @@ export default function Header() {
               </div>
             </div>
           </div>
-          <button
-            onClick={toggleTheme}
-            className="p-2 text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300"
-            aria-label={theme === 'dark' ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            {theme === 'dark' ? (
-              <SunIcon className="h-5 w-5" />
-            ) : (
-              <MoonIcon className="h-5 w-5" />
-            )}
-          </button>
+          <div className="flex items-center space-x-4">
+            <a
+              href="https://pk-portfolio-six.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+            >
+              <UserCircleIcon className="h-5 w-5 mr-2" />
+              My Profile
+            </a>
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300"
+              aria-label={theme === 'dark' ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {theme === 'dark' ? (
+                <SunIcon className="h-5 w-5" />
+              ) : (
+                <MoonIcon className="h-5 w-5" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </header>
