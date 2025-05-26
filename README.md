@@ -42,3 +42,6 @@ Built With
 - Tailwind CSS
 - TypeScript
 - Zustand (for state management)
+
+- ![image](https://github.com/user-attachments/assets/1ef34d3d-0c51-42e7-a81d-96c6cd6e44a0)
+
