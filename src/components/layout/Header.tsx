@@ -1,33 +1,33 @@
 'use client'
 
 // Header component with dark mode and search functionality
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { MagnifyingGlassIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline'
 import { useStore } from '@/store/useStore'
 
 export default function Header() {
-  const [isDark, setIsDark] = useState(false)
-  const [mounted, setMounted] = useState(false)
   const { search, updateSearch } = useStore()
+  const [theme, setTheme] = useState<'light' | 'dark'>('light')
 
-  // Only run on client side
+  // Initialize theme on mount
   useEffect(() => {
-    setMounted(true)
-    // Check system preference for initial theme
-    if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setIsDark(true)
-      document.documentElement.classList.add('dark')
+    // Check localStorage first
+    const savedTheme = localStorage.getItem('theme')
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      setTheme('dark')
     }
   }, [])
 
   const toggleTheme = () => {
-    setIsDark(!isDark)
-    document.documentElement.classList.toggle('dark')
-  }
-
-  // Prevent hydration mismatch by not rendering until mounted
-  if (!mounted) {
-    return null
+    const newTheme = theme === 'light' ? 'dark' : 'light'
+    setTheme(newTheme)
+    localStorage.setItem('theme', newTheme)
+    
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
   }
 
   return (
@@ -56,9 +56,9 @@ export default function Header() {
           <button
             onClick={toggleTheme}
             className="p-2 text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300"
-            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            aria-label={theme === 'dark' ? "Switch to light mode" : "Switch to dark mode"}
           >
-            {isDark ? (
+            {theme === 'dark' ? (
               <SunIcon className="h-5 w-5" />
             ) : (
               <MoonIcon className="h-5 w-5" />

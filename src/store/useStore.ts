@@ -1,37 +1,38 @@
 import { create } from 'zustand'
 
-// Basic employee info
 type Employee = {
   id: number
   firstName: string
   lastName: string
   email: string
-  dept: string  // shorter name for department
-  rating: number  // shorter name for performanceRating
-  pic: string    // shorter name for image
+  dept: string  
+  rating: number  
+  pic: string   
   role?: string
-  promoted?: boolean  // simpler name than isPromoted
-  promoDate?: string // shorter name for promotedAt
-  oldRating?: number // simpler name for previousRating
+  promoted?: boolean  
+  promoDate?: string 
+  oldRating?: number 
 }
 
-// Our main store
 type AppStore = {
-  team: Employee[]  // simpler name than employees
-  favorites: number[]  // more natural name than bookmarkedEmployees
-  search: string    // simpler name than searchQuery
-  
-  // Actions
+  team: Employee[]  
+  favorites: number[]  
+  search: string    
+  theme: 'light' | 'dark'
+
   updateTeam: (team: Employee[]) => void
   toggleFavorite: (id: number) => void
   updateSearch: (text: string) => void
   handlePromotion: (id: number) => void
+  toggleTheme: () => void
+  setTheme: (theme: 'light' | 'dark') => void
 }
 
 export const useStore = create<AppStore>((set) => ({
   team: [],
   favorites: [],
   search: '',
+  theme: 'light',
   
   updateTeam: (team) => set({ team }),
   
@@ -66,4 +67,23 @@ export const useStore = create<AppStore>((set) => ({
           : member
       ),
     })),
+
+  toggleTheme: () => 
+    set((state) => {
+      const newTheme = state.theme === 'light' ? 'dark' : 'light'
+      localStorage.setItem('theme', newTheme)
+      document.documentElement.classList.toggle('dark')
+      return { theme: newTheme }
+    }),
+
+  setTheme: (theme) => 
+    set(() => {
+      localStorage.setItem('theme', theme)
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+      return { theme }
+    }),
 })) 
